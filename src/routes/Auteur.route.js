@@ -8,7 +8,8 @@ const cAuth = require('../controllers/Authentification.controller');
 roleRouter.get('/', cAuth.verifyJWT, (req, res) => {
     try {
         Auteurdb.find().then((result) => {
-            res.status(200).send({ message: "Success", data: result });
+            // res.status(200).send({ message: "Success", data: result });
+            res.status(200).send( result );
         }).catch((err) => {
             res.status(400).send({ message: err.message });
         });

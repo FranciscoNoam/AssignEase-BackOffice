@@ -51,18 +51,18 @@ exports.authUser = async (req, res) => {
 
         const user = await Userdb.findOne({ username: username }).select('name username password');
         if (!user) {
-            return res.status(404).json({ error: 'Email ou mot de passe est incorrect' });
+            return res.status(404).json({ status:400,message: 'Email ou mot de passe est incorrect' });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
-            return res.status(401).json({ error: 'Email ou mot de passe est incorrect' });
+            return res.status(401).json({ status:400,message: 'Email ou mot de passe est incorrect' });
         }
 
         const token = this.generateToken(user);
 
-        res.json({ token });
+        res.json({ status:200,message:"Success",token,name:user.name });
     } catch (error) {
         res.send({ ststus: 400, mesage: error.message });
     }
