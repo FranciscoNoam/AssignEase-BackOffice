@@ -12,6 +12,7 @@ const corsOptions = {
     optionSuccessStatus: 200,
 };
 
+app.use('/public', express.static('public'));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(cors(corsOptions));
@@ -21,10 +22,10 @@ const connectDB = require("./src/database/connection");
 connectDB();
 
 // Importation des routes
-app.use("/", require("./src/routes/Professeur.route"));
-app.use("/", require("./src/routes/Auteur.route"));
-app.use("/", require("./src/routes/Matiere.route"));
-app.use("/", require("./src/routes/Assignment.route"));
+// app.use("/", require("./src/routes/Professeur.route"));
+// app.use("/", require("./src/routes/Auteur.route"));
+// app.use("/", require("./src/routes/Matiere.route"));
+app.use("/api/assignment", require("./src/routes/assignmentRoute"));
 
 // Importation Controllers
 const authController = require('./src/controllers/Authentification.controller');
