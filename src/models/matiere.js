@@ -11,4 +11,4 @@ let MatiereSchema = Schema({
 
 MatiereSchema.plugin(mongoosePaginate);
 
-module.exports =    mongoose.model('matiere',MatiereSchema)
+module.exports =  mongoose.model('matieres',MatiereSchema)

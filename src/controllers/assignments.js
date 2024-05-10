@@ -1,18 +1,7 @@
 const { makeLookUpAssign } = require('../services/assignmentService');
-let Assignment = require('./../models/assignment')
+let Assignment = require('./../models/assignment');
+let utilService = require('./../services/utils');
 
-// Récupérer tous les assignments (GET)
-/*
-function getAssignments(req, res){
-    Assignment.find((err, assignments) => {
-        if(err){
-            res.send(err)
-        }
-
-        res.send(assignments);
-    });
-}
-*/
 
 function getAssignments(req, res){
     let aggregateQuery = Assignment.aggregate();
@@ -29,7 +18,6 @@ function getAssignments(req, res){
             if(err){
                 res.send(err)
             }
-            console.log("Data ==> ", data);
             res.send(data);
         }
     );
@@ -53,21 +41,35 @@ function getAssignment(req, res){
 
 // Ajout d'un assignment (POST)
 function postAssignment(req, res){
-    let assignment = new Assignment();
-    assignment.id = req.body.id;
-    assignment.nom = req.body.nom;
-    assignment.dateDeRendu = req.body.dateDeRendu;
-    assignment.rendu = req.body.rendu;
+    Assignment.findOne().sort({id: -1}).exec()
+        .then(highestAssignment => {
+            let newId = 1; // ID par défaut si la collection est vide
 
-    console.log("POST assignment reçu :");
-    console.log(assignment)
+            if (highestAssignment) {
+                newId = highestAssignment.id + 1; // Incrémenter l'ID le plus élevé
+            }
 
-    assignment.save( (err) => {
-        if(err){
-            res.send('cant post assignment ', err);
-        }
-        res.json({ message: `${assignment.nom} saved!`})
-    })
+            let assignment = new Assignment();
+            assignment.id = newId;
+            assignment.nom = req.body.nom;
+            assignment.dateDeRendu = req.body.dateDeRendu;
+            assignment.note =  req.body.note;
+            assignment.rendu = req.body.rendu;
+            assignment.auteur = req.body.auteur.id;
+            assignment.matiere = req.body.matiere.id;
+            assignment.remarques = req.body.remarques;
+
+            console.log("POST assignment reçu :");
+            console.log(assignment);
+
+            return assignment.save();
+        })
+        .then(savedAssignment => {
+            res.json({ message: `${savedAssignment.nom} enregistré !`, id: savedAssignment.id });
+        })
+        .catch(err => {
+            res.send('Impossible de poster l\'assignment : ' + err);
+        });
 }
 
 // Update d'un assignment (PUT)

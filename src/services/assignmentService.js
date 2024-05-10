@@ -2,7 +2,7 @@ const makeLookUpAssign = (aggregateQuery) => {
 
     //Faire une filtre sur l'auteur correspondant
     aggregateQuery.lookup({
-        from: 'auteur', 
+        from: 'auteurs', 
         localField: 'auteur',
         foreignField: 'id',
         as: 'auteur'
@@ -10,7 +10,7 @@ const makeLookUpAssign = (aggregateQuery) => {
 
     //Faire une filtre sur la matiere correspondant
     aggregateQuery.lookup({
-        from: 'matiere', 
+        from: 'matieres', 
         localField: 'matiere',
         foreignField: 'id', 
         as: 'matiere'
@@ -21,7 +21,7 @@ const makeLookUpAssign = (aggregateQuery) => {
    aggregateQuery.unwind('$matiere');
     
     aggregateQuery.lookup({
-        from: 'professeur', 
+        from: 'professeurs', 
         localField: 'matiere.prof',
         foreignField: 'id',
         as: 'matiere.prof' 
