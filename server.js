@@ -12,52 +12,41 @@ const corsOptions = {
     optionSuccessStatus: 200,
 };
 
+app.use('/public', express.static('public'));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(cors(corsOptions));
 
-
-
-//++++++++++++++++++++++++ Connection BDD +++++++++++++++++++++++++
-
+// Connection BDD
 const connectDB = require("./src/database/connection");
 connectDB();
 
-// +++++++++++++++++++++++ Importation des routes ++++++++++++++++++++++++++++++++
+// Importation des routes
+// app.use("/", require("./src/routes/Professeur.route"));
+// app.use("/", require("./src/routes/Auteur.route"));
+// app.use("/", require("./src/routes/Matiere.route"));
+app.use("/api/assignment", require("./src/routes/assignmentRoute"));
+app.use("/api/matiere", require("./src/routes/matiereRoute"));
+app.use("/api/auteur", require("./src/routes/auteurRoute"));
 
-app.use("/", require("./src/routes/Professeur.route"));
-app.use("/", require("./src/routes/Auteur.route"));
-app.use("/", require("./src/routes/Matiere.route"));
-app.use("/", require("./src/routes/Assignment.route"));
+// Importation Controllers
+const authController = require('./src/controllers/Authentification.controller');
 
-//++++++++++++++++++++++++ Importation Controllers  +++++++++++++++++++++++++++++++++++++
-
-const cAuth = require('./src/controllers/Authentification.controller');
-//++++++++++++++++++++++++ Importation Models +++++++++++++++++++++++++++++++++++++++++
-
-
-//++++++++++++++++++++++++ API ++++++++++++++++++++++++++++++++++++++++++++++++++++
-app.get('/api/init-users', cAuth.createUserInit);
-app.post("/login", cAuth.authUser);
-app.get('/',  (req, res) => {
+// API
+app.get('/api/init-users', authController.createUserInit);
+app.post("/login", authController.authUser);
+app.get('/', (req, res) => {
     res.send('Backend API connecté');
 });
 
-//++++++++++++++++++++++++ END API ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-
+// Gestion de l'API introuvable
 app.use(function (req, res) {
-    res.send({ status: 404, message: 'API introuvable' });
+    res.status(404).send({ status: 404, message: 'API introuvable' });
 });
 
+const PORT = process.env.PORT || 3000;
+const IP = process.env.IP || '127.0.0.1'; 
 
-
-var PORT = process.env.PORT || 3000;
-var IP = process.env.IP;
-server.listen(PORT, () => {
-
-    console.log(`App is listening at Ip:${IP}:${PORT}`);
-
+server.listen(PORT, IP, () => {
+    console.log(`App is listening at http://${IP}:${PORT}`);
 });

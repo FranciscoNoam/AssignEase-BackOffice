@@ -5,8 +5,9 @@ mongoose.set("strictQuery", false);
 
 const connectDB = async () => {
   try {
+    const uri_local = "mongodb://localhost:27017/assign-easy"
     await mongoose
-      .connect(process.env.URL_DB_MONGO, {
+      .connect(process.env.URL_DB_MONGO || uri_local, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       })
