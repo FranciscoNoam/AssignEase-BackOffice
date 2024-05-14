@@ -21,7 +21,7 @@ const Auteurdb = require("../models/Auteur.model");
 */
 exports.findAll=(req,res)=>{
     try {
-        Auteurdb.find().sort({_id:1}).then((result) => {
+        Auteurdb.find().sort({id:1}).then((result) => {
             // res.status(200).send({ message: "Success", data: result });
             res.status(200).send( result );
         }).catch((err) => {
