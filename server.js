@@ -21,10 +21,7 @@ app.use(cors(corsOptions));
 const connectDB = require("./src/database/connection");
 connectDB();
 
-// Importation des routes
-// app.use("/", require("./src/routes/Professeur.route"));
-// app.use("/", require("./src/routes/Auteur.route"));
-// app.use("/", require("./src/routes/Matiere.route"));
+
 app.use("/api/assignment", require("./src/routes/assignmentRoute"));
 app.use("/api/matiere", require("./src/routes/matiereRoute"));
 app.use("/api/auteur", require("./src/routes/auteurRoute"));

@@ -31,6 +31,36 @@ const makeLookUpAssign = (aggregateQuery) => {
 
 }
 
+const makeFilterAssign = (aggregateQuery , filters) => {
+    const filterQuery = {};
+    filters.forEach(filter => {
+        filterQuery[filter.field] = (filter.field === 'rendu' && typeof filter.value === 'boolean') ? filter.value : { $regex: filter.value, $options: 'i' };
+    });
+    aggregateQuery.match(filterQuery);
+}
+
+const makeSortAssign = (aggregateQuery , sorts ) => {
+    sorts.forEach(sort => {
+        if (sort.field === 'dateDeRendu') {
+            aggregateQuery.addFields({
+                convertedDateDeRendu: {
+                    $dateFromString: {
+                        dateString: '$dateDeRendu',
+                        format: '%d-%m-%Y'
+                    }
+                }
+            });
+            aggregateQuery.sort({convertedDateDeRendu: sort.value});
+        } else {
+            let sortObject = {};
+            sortObject[sort.field] = sort.value;
+            aggregateQuery.sort(sortObject);
+        }
+    });
+}
+
 module.exports = {
-    makeLookUpAssign
+    makeLookUpAssign,
+    makeFilterAssign,
+    makeSortAssign
 }

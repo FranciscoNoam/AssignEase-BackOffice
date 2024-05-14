@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 const cAuth = require('../controllers/Authentification.controller');
-const assignmentController = require('../controllers/assignments');
+const assignmentController = require('../controllers/assignmentsController');
 
-router.get("/" ,assignmentController.getAssignments);
+router.post("/" ,assignmentController.getAssignments);
 router.post("/" ,assignmentController.postAssignment);
 router.put("/" , cAuth.verifyJWT,assignmentController.updateAssignment);
 router.get("/:id" ,assignmentController.getAssignment);

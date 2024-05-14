@@ -15,12 +15,16 @@ exports.generateToken = (user) => {
         username: user.username,
         name: user.name,
     };
-    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '2h' });
+    const JWT_SECRET =  "jhgihfzf!°97896987908/.?8è!ç";
+    // return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '2h' });
+    return jwt.sign(payload, JWT_SECRET, { expiresIn: '2h' });
 };
 
 exports.verifyToken = (token) => {
+    const JWT_SECRET =  "jhgihfzf!°97896987908/.?8è!ç";
     try {
-        return jwt.verify(token, process.env.JWT_SECRET);
+        // return jwt.verify(token, process.env.JWT_SECRET);
+        return jwt.verify(token, JWT_SECRET);
     } catch (error) {
         return false;
     }
@@ -53,15 +57,15 @@ exports.authUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ status:400,message: 'Email ou mot de passe est incorrect' });
         }
-
+        
         const isPasswordValid = await bcrypt.compare(password, user.password);
-
+        
         if (!isPasswordValid) {
             return res.status(401).json({ status:400,message: 'Email ou mot de passe est incorrect' });
         }
-
+        
         const token = this.generateToken(user);
-
+        
         res.json({ status:200,message:"Success",token,name:user.name });
     } catch (error) {
         res.send({ ststus: 400, mesage: error.message });

@@ -1,6 +1,6 @@
-const { makeLookUpAssign } = require('../services/assignmentService');
-let Assignment = require('./../models/assignment');
-let utilService = require('./../services/utils');
+const { makeLookUpAssign, makeFilterAssign, makeSortAssign } = require('../services/assignmentService');
+let Assignment = require('../models/assignment');
+let utilService = require('../services/utils');
 
 
 function getAssignments(req, res){
@@ -8,6 +8,17 @@ function getAssignments(req, res){
    
     makeLookUpAssign(aggregateQuery);
     
+    const { filters, sorts } = req.body;
+
+
+    if (filters && filters.length > 0) {
+       makeFilterAssign(aggregateQuery , filters);
+    }
+
+    if (sorts && sorts.length > 0) {
+       makeSortAssign(aggregateQuery , sorts)
+    }
+
     Assignment.aggregatePaginate(
         aggregateQuery, 
         {
@@ -25,18 +36,27 @@ function getAssignments(req, res){
 
 // Récupérer un assignment par son id (GET)
 function getAssignment(req, res){
-    let assignmentId = req.params.id;
-    Assignment.findById(assignmentId, (err, assignment) =>{
-        if(err){res.send(err)}
-        res.json(assignment);
-    })
+    let assignmentId = utilService.makeId(req.params.id);
 
-    /*
-    Assignment.findOne({id: assignmentId}, (err, assignment) =>{
-        if(err){res.send(err)}
-        res.json(assignment);
-    })
-    */
+    let aggregateQuery = Assignment.aggregate();
+
+    aggregateQuery._pipeline.push({
+        $match: {
+            _id: assignmentId 
+        }
+    });
+
+    makeLookUpAssign(aggregateQuery);
+    
+    Assignment.aggregate(
+        aggregateQuery
+        .then(assignment => {
+            res.json(assignment[0]);
+        })
+        .catch(err => {
+            res.send(err);
+        })
+    )
 }
 
 // Ajout d'un assignment (POST)
@@ -52,14 +72,11 @@ function postAssignment(req, res){
             let assignment = new Assignment();
             assignment.id = newId;
             assignment.nom = req.body.nom;
-            assignment.dateDeRendu = req.body.dateDeRendu;
-            assignment.note =  req.body.note;
-            assignment.rendu = req.body.rendu;
+            assignment.dateDeRendu = utilService.makeDate(req.body.dateDeRendu);
             assignment.auteur = req.body.auteur.id;
             assignment.matiere = req.body.matiere.id;
-            assignment.remarques = req.body.remarques;
 
-            console.log("POST assignment reçu :");
+            console.log("POST assignment reçu : ");
             console.log(assignment);
 
             return assignment.save();
@@ -73,20 +90,28 @@ function postAssignment(req, res){
 }
 
 // Update d'un assignment (PUT)
-function updateAssignment(req, res) {
-    console.log("UPDATE recu assignment : ");
-    console.log(req.body);
-    Assignment.findByIdAndUpdate(req.body._id, req.body, {new: true}, (err, assignment) => {
-        if (err) {
-            console.log(err);
-            res.send(err)
-        } else {
-          res.json({message: 'updated'})
+async function updateAssignment(req, res) {
+    try {
+        const _id = utilService.makeId(req.body._id);
+        const assignment = await Assignment.findById(_id);
+        if (!assignment) {
+            return res.status(404).json({ message: 'Assignment not found' });
         }
 
-      // console.log('updated ', assignment)
-    });
+        assignment.nom = req.body.nom;
+        assignment.dateDeRendu = utilService.makeDate(req.body.dateDeRendu);
+        assignment.note = req.body.note;
+        assignment.rendu = req.body.rendu;
+        assignment.auteur = req.body.auteur.id;
+        assignment.matiere = req.body.matiere.id;
+        assignment.remarques = req.body.remarques;
 
+        const updatedAssignment = await assignment.save();
+        res.json({ message: 'updated', assignment: updatedAssignment });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 }
 
 // suppression d'un assignment (DELETE)
