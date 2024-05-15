@@ -11,4 +11,4 @@ let ProfesseurSchema = Schema({
 
 ProfesseurSchema.plugin(mongoosePaginate);
 
-module.exports =    mongoose.model('professeurs',ProfesseurSchema)
+module.exports =   mongoose.model('professeurs',ProfesseurSchema)

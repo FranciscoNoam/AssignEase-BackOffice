@@ -10,9 +10,8 @@ const storage = multer.diskStorage({
         cb(null, sectionFile( req.params.section)["diskStorage"] );
     },
     filename: function (req, file, cb) {
-        const matiereParse = JSON.parse(req.body.matiere);
-        console.log(matiereParse);
-        cb(null, matiereParse.image )  ;
+        const fileName = req.body['fileName'];
+        cb(null, fileName )  ;
     },
 });
 

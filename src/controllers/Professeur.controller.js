@@ -4,6 +4,10 @@ const fs = require("fs");
 const Matieredb = require("../models/matiere");
 const Assignmentdb = require("../models/assignment");
 const Professeurdb = require("../models/Professeur.model");
+const utilService =  require('./../services/utils');
+
+// const Professeur = require("../models/professeur")
+const e = require("express");
 
 exports.findAll = (req, res) => {
   try {
@@ -233,3 +237,92 @@ exports.delete = async (req, res) => {
     session.endSession();
   }
 };
+
+
+exports.postProfesseur = (req, res) => {
+  Professeurdb.findOne().sort({ _id: -1 }).exec()
+      .then(highestProfesseur => {
+          let newId = 1;
+
+          if (highestProfesseur) {
+              newId = highestProfesseur.id + 1;
+          }
+
+          let professeur = new Professeurdb();
+          const profParse = JSON.parse(req.body['professeur']);
+          professeur.id = newId;
+          professeur.nom = profParse.nom;
+          professeur.prenom = profParse.prenom;
+          professeur.photo = profParse.photo;
+
+          console.log("POST professeur reçu : ");
+          console.log(professeur);
+
+          return professeur.save();
+      })
+      .then(savedProfesseur => {
+          res.json({ message: `${savedProfesseur.nom} ${savedProfesseur.prenom} enregistré(e) !`, id: savedProfesseur._id });
+      })
+      .catch(err => {
+        console.log("err ", err);
+          res.send('Impossible de poster le professeur : ' + err);
+      });
+}
+
+exports.updateProfesseur = async (req, res) => {
+  try {
+      const _id = utilService.makeId(req.params.id);
+      const professeur = await Professeur.findById(_id);
+      if (!professeur) {
+          return res.status(404).json({ message: 'Professeur not found' });
+      }
+      
+      const professeurParse = JSON.parse(req.body['professeur']);
+      professeur.nom = professeurParse.nom;
+      professeur.prenom = professeurParse.prenom;
+      professeur.photo = professeurParse.photo;
+
+      const updatedProfesseur = await professeur.save();
+      res.json({ message: 'Professeur updated', professeur: updatedProfesseur });
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+exports.getProfesseur = async (req, res) => {
+  try {
+      let professeurId = utilService.makeId(req.params.id);
+      let aggregateQuery = Professeur.aggregate();
+
+      aggregateQuery._pipeline.push({
+          $match: {
+              _id: professeurId 
+          }
+      });
+
+      aggregateQuery.exec().then(professeurs => {
+          res.json(professeurs[0]);
+      }).catch(err => {
+          res.send(err);
+      });
+  } catch (err) {
+      res.send(err);
+  }
+};
+
+exports.deleteProfesseur = (req, res) => {
+  const _id = utilService.makeId(req.params.id);
+  Professeurdb.findByIdAndDelete(_id)
+      .then(professeur => {
+          if (!professeur) {
+              return res.status(404).json({ message: "Professeur not found" });
+          }
+          res.json({ message: "Professeur deleted successfully", professeur });
+      })
+      .catch(err => {
+          res.status(500).json({ error: err.message });
+      });
+};
+
+

@@ -59,6 +59,7 @@ app.use("/api/assignment", require("./src/routes/assignmentRoute"));
 app.use("/api/matiere", require("./src/routes/matiereRoute"));
 app.use("/api/auteur", require("./src/routes/auteurRoute"));
 app.use("/api/teacher", require("./src/routes/Professeur.route"));
+app.use("/api/professeur", require("./src/routes/Professeur.route"));
 
 // Importation Controllers
 const authController = require('./src/controllers/Authentification.controller');
