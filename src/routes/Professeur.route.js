@@ -9,10 +9,10 @@ const cAuth = require('../controllers/Authentification.controller');
 
 
 
-router.get("/", cAuth.verifyJWT, cProfesseur.findAll);
+router.get("/",cProfesseur.findAll);
 
 
-router.get("/:id", cAuth.verifyJWT, cProfesseur.findById);
+router.get("/:id",cProfesseur.findById);
 
 // router.post("/", cAuth.verifyJWT, upload.single('photo'), cProfesseur.create);
 

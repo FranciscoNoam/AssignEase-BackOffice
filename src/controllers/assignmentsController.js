@@ -63,10 +63,10 @@ function getAssignment(req, res){
 function postAssignment(req, res){
     Assignment.findOne().sort({id: -1}).exec()
         .then(highestAssignment => {
-            let newId = 1; // ID par défaut si la collection est vide
+            let newId = 1; 
 
             if (highestAssignment) {
-                newId = highestAssignment.id + 1; // Incrémenter l'ID le plus élevé
+                newId = highestAssignment.id + 1; 
             }
 
             let assignment = new Assignment();
