@@ -272,7 +272,7 @@ exports.postProfesseur = (req, res) => {
 exports.updateProfesseur = async (req, res) => {
   try {
       const _id = utilService.makeId(req.params.id);
-      const professeur = await Professeur.findById(_id);
+      const professeur = await Professeurdb.findById(_id);
       if (!professeur) {
           return res.status(404).json({ message: 'Professeur not found' });
       }
@@ -293,7 +293,7 @@ exports.updateProfesseur = async (req, res) => {
 exports.getProfesseur = async (req, res) => {
   try {
       let professeurId = utilService.makeId(req.params.id);
-      let aggregateQuery = Professeur.aggregate();
+      let aggregateQuery = Professeurdb.aggregate();
 
       aggregateQuery._pipeline.push({
           $match: {
