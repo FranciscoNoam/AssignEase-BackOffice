@@ -72,8 +72,9 @@ const updateMatiere = async (req, res) => {
         }
         
         const matiereParse = JSON.parse(req.body['matiere']);
+        const fileName = req.body['fileName'] 
         matiere.nom = matiereParse.nom;
-        matiere.image = matiereParse.image;
+        matiere.image = fileName ? fileName : matiere.image;
         matiere.prof = matiereParse.prof.id;
 
         const updatedMatiere = await matiere.save();
@@ -89,7 +90,7 @@ const updateMatiere = async (req, res) => {
 const deleteMatiere = async (req, res) => {
     try {
         const _id = req.params.id;
-        
+
         const matiere = await Matiere.findById(_id);
         if (!matiere) {
             return res.status(404).json({ message: "Matiere not found" });

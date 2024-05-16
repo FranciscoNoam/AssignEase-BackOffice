@@ -56,8 +56,9 @@ exports.updateAuteur = async (req, res) => {
       }
       
       const auteurParse = JSON.parse(req.body['auteur']);
+      const fileName = req.body['fileName'];
       auteur.nom = auteurParse.nom;
-      auteur.photo = auteurParse.photo;
+      auteur.photo = fileName ? fileName : auteur.photo;
 
       const updatedAuteur = await auteur.save();
       res.json({ message: 'Auteur updated', auteur: updatedAuteur });

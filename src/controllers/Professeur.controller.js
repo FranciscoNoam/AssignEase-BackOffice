@@ -277,9 +277,10 @@ exports.updateProfesseur = async (req, res) => {
       }
       
       const professeurParse = JSON.parse(req.body['professeur']);
+      const fileName = req.body['fileName'];
       professeur.nom = professeurParse.nom;
       professeur.prenom = professeurParse.prenom;
-      professeur.photo = professeurParse.photo;
+      professeur.photo = fileName ? fileName : professeur.photo;
 
       const updatedProfesseur = await professeur.save();
       res.json({ message: 'Professeur updated', professeur: updatedProfesseur });
