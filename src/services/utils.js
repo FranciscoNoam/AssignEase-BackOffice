@@ -16,7 +16,7 @@ const makeId = (id)=>{
 
 const makeDate = (dateStr)=>{
     const date = new Date(dateStr);
-    const day = date.getUTCDate()+1;
+    const day = date.getUTCDate();
     const month = date.getUTCMonth() + 1; 
     const year = date.getUTCFullYear();
 
