@@ -1,6 +1,5 @@
 const makeLookUpAssign = (aggregateQuery) => {
 
-    //Faire une filtre sur l'auteur correspondant
     aggregateQuery.lookup({
         from: 'auteurs', 
         localField: 'auteur',
@@ -8,7 +7,6 @@ const makeLookUpAssign = (aggregateQuery) => {
         as: 'auteur'
     });
 
-    //Faire une filtre sur la matiere correspondant
     aggregateQuery.lookup({
         from: 'matieres', 
         localField: 'matiere',
@@ -16,7 +14,6 @@ const makeLookUpAssign = (aggregateQuery) => {
         as: 'matiere'
     });
 
-    // Déconstruire les tableaux produits par les étapes de lookup pour avoir un objet non un tableau
    aggregateQuery.unwind('$auteur');
    aggregateQuery.unwind('$matiere');
     

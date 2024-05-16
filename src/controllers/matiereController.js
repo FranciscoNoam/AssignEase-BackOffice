@@ -86,19 +86,26 @@ const updateMatiere = async (req, res) => {
 
 
 
-const deleteMatiere = (req, res) => {
-    const _id = utilService.makeId(req.params.id);
-    Matiere.findByIdAndDelete(_id)
-        .then(matiere => {
-            if (!matiere) {
-                return res.status(404).json({ message: "Matiere not found" });
-            }
-            res.json({ message: "Matiere deleted successfully", matiere });
-        })
-        .catch(err => {
-            res.status(500).json({ error: err.message });
-        });
+const deleteMatiere = async (req, res) => {
+    try {
+        const _id = req.params.id;
+        
+        const matiere = await Matiere.findById(_id);
+        if (!matiere) {
+            return res.status(404).json({ message: "Matiere not found" });
+        }
+
+        await Assignment.deleteMany({ matiere: matiere.id });
+
+        await Matiere.findByIdAndDelete(_id);
+        utilService.deleteImageFile("matiere", matiere.image);
+
+        res.json({ message: "Matiere deleted successfully" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 };
+
 
 
 

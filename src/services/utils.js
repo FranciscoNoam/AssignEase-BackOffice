@@ -33,10 +33,22 @@ const verifyFolderUpload = (req, res, next) => {
     next();
 }
 
+const deleteImageFile = (section , file)=>{
+    const diskStorage = sectionFile(section)['diskStorage'];
+    const imagePath = `${diskStorage}/${file}`;
+    if (fs.existsSync(imagePath)) {
+      fs.unlinkSync(imagePath);
+    }else{
+      console.log("Non exist path "+section ,imagePath);
+    }
+}
+
 
 module.exports = {
     getCount,
     makeId,
     makeDate,
-    verifyFolderUpload
+    verifyFolderUpload,
+    sectionFile,
+    deleteImageFile
 }

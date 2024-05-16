@@ -1,5 +1,6 @@
 // let Auteur = require("../models/auteur");
 const Auteurdb = require("../models/Auteur.model");
+let Assignment = require('../models/assignment');
 const utilService =  require('./../services/utils');
 
 exports.findAll=(req,res)=>{
@@ -16,109 +17,6 @@ exports.findAll=(req,res)=>{
     }
 };
 
-exports.findById = (req, res) => {
-  try {
-    if (isNaN(Number(req.params.id))) {
-      return res.send({
-        status: 400,
-        message:
-          "Le champ dans le paramètre de la requête n'est pas un nombre.",
-      });
-    }
-    Auteurdb.findById(req.params.id)
-      .then((result) => {
-        res.status(200).send({ message: "Success", data: result });
-      })
-      .catch((err) => {
-        res.status(400).send({ message: err.message });
-      });
-  } catch (err) {
-    console.log("api/teacher/" + req.params.id + " Error", err.message);
-    res.status(400).send({ message: err.message });
-  }
-};
-
-exports.create = (req, res) => {
-  try {
-    console.log(req.body);
-    const { nom, photo } = req.body;
-    if (!nom) {
-      throw new Error("Donnée invalide");
-    }
-
-    const auteur = new Auteurdb({
-      _id: nouvelId,
-      nom: nom,
-    });
-    auteur
-      .save()
-      .then((result) => {
-        res.status(200).send({ status: 200, message: "Success", data: result });
-      })
-      .catch((err) => {
-        res.status(400).send({ status: 400, message: err.message });
-      });
-  } catch (err) {
-    console.log("api/auteur/post Error", err.message);
-    res.status(400).send({ status: 400, message: err.message });
-  }
-};
-
-exports.update = (req, res) => {
-  try {
-    const { nom } = req.body;
-    if (!nom) {
-      throw new Error("Donnée invalide");
-    }
-    if (isNaN(Number(req.params.id))) {
-      return res.send({
-        status: 400,
-        message:
-          "Le champ dans le paramètre de la requête n'est pas un nombre.",
-      });
-    }
-    Auteurdb.findByIdAndUpdate(
-      { _id: req.params.id },
-      {
-        nom: nom,
-      }
-    )
-      .then((result) => {
-        result.nom = nom;
-        res.status(200).send({ status: 200, message: "Success", data: result });
-      })
-      .catch((err) => {
-        res.status(400).send({ status: 400, message: err.message });
-      });
-  } catch (err) {
-    console.log("api/auteur/put/" + req.params.id + " Error", err.message);
-    res.status(400).send({ status: 400, message: err.message });
-  }
-};
-
-exports.delete = (req, res) => {
-  try {
-    console.log(req.params);
-    if (isNaN(Number(req.params.id))) {
-      return res.send({
-        status: 400,
-        message:
-          "Le champ dans le paramètre de la requête n'est pas un nombre.",
-      });
-    }
-
-    Auteurdb.deleteOne({ _id: req.params.id })
-      .then((result) => {
-        res.status(200).send({ status: 200, message: "Success", data: result });
-      })
-      .catch((err) => {
-        res.status(400).send({ status: 400, message: err.message });
-      });
-  } catch (err) {
-    console.log("api/teacher/delete/" + req.params.id + " Error", err.message);
-    res.status(400).send({ status: 400, message: err.message });
-  }
-};
 
 exports.postAuteur = (req, res) => {
   Auteurdb.findOne().sort({ _id: -1 }).exec()
@@ -193,17 +91,27 @@ exports.getAuteur = async (req, res) => {
   }
 };
 
-exports.deleteAuteur = (req, res) => {
-  const _id = utilService.makeId(req.params.id);
-  Auteurdb.findByIdAndDelete(_id)
-      .then(auteur => {
-          if (!auteur) {
-              return res.status(404).json({ message: "Auteur not found" });
-          }
-          res.json({ message: "Auteur deleted successfully", auteur });
-      })
-      .catch(err => {
-          res.status(500).json({ error: err.message });
-      });
+exports.deleteAuteur = async (req, res) => {
+  try {
+      const _id = req.params.id;
+
+      // Supprimer l'image de l'auteur dans le dossier uploads
+      const auteur = await Auteurdb.findById(_id);
+      if (!auteur) {
+        return res.status(404).json({ message: "Auteur not found" });
+      }
+
+      // Supprimer les assignments créés par l'auteur
+      await Assignment.deleteMany({ auteur: auteur.id });
+
+      // Supprimer l'auteur lui-même
+      await Auteurdb.findByIdAndDelete(_id);
+      utilService.deleteImageFile("auteur", auteur.photo);
+
+      res.json({ message: "Auteur deleted successfully" });
+  } catch (err) {
+    console.log(err);
+      res.status(500).json({ error: err.message });
+  }
 };
 

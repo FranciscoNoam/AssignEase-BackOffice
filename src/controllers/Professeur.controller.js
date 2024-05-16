@@ -6,8 +6,7 @@ const Assignmentdb = require("../models/assignment");
 const Professeurdb = require("../models/Professeur.model");
 const utilService =  require('./../services/utils');
 
-// const Professeur = require("../models/professeur")
-const e = require("express");
+
 
 exports.findAll = (req, res) => {
   try {
@@ -311,18 +310,39 @@ exports.getProfesseur = async (req, res) => {
   }
 };
 
-exports.deleteProfesseur = (req, res) => {
-  const _id = utilService.makeId(req.params.id);
-  Professeurdb.findByIdAndDelete(_id)
-      .then(professeur => {
-          if (!professeur) {
-              return res.status(404).json({ message: "Professeur not found" });
-          }
-          res.json({ message: "Professeur deleted successfully", professeur });
-      })
-      .catch(err => {
-          res.status(500).json({ error: err.message });
-      });
+exports.deleteProfesseur = async (req, res) => {
+  try {
+    const _id = req.params.id;
+        
+    const professeur = await Professeurdb.findById(_id);
+    if (!professeur) {
+      return res.status(404).json({ message: "Professeur not found" });
+    }
+
+    const matieresEnseignees = await Matieredb.find({ professeur: _id });
+   
+    // Extraire les IDs des matières
+    const idsMatieres = matieresEnseignees.map(matiere => matiere._id);
+
+    // Supprimer les matières enseignées par le professeur et ses photos (matiere)
+    await Matieredb.deleteMany({ prof: professeur.id });
+    for (const matiere of matieresEnseignees) {
+      utilService.deleteImageFile("matiere", matiere.image);
+    }
+
+    // Supprimer les assignments associés aux matières supprimées
+    await Assignmentdb.deleteMany({ matiere: { $in: idsMatieres } });
+
+    // Supprimer le professeur lui-même et son photo
+    await Professeurdb.findByIdAndDelete(_id);
+
+    utilService.deleteImageFile("professeur" , professeur.photo);
+
+    res.json({ message: "Professeur deleted successfully" });
+  } catch (err) {
+    console.log(err);
+        res.status(500).json({ error: err.message });
+    }
 };
 
 
