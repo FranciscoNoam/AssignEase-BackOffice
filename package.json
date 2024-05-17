@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "buid" : "npm install",
+    "start-prod": "npm start",
     "start": "nodemon server.js"
   },
   "author": "",
