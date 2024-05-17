@@ -52,9 +52,7 @@ const storage = multer.diskStorage({
   const uploadProfilTeacher = multer({ storage: storage });
 
 // Importation des routes
-// app.use("/", require("./src/routes/Professeur.route"));
-// app.use("/", require("./src/routes/Auteur.route"));
-// app.use("/", require("./src/routes/Matiere.route"));
+
 app.use("/api/assignment", require("./src/routes/assignmentRoute"));
 app.use("/api/matiere", require("./src/routes/matiereRoute"));
 app.use("/api/auteur", require("./src/routes/auteurRoute"));
@@ -75,10 +73,6 @@ app.get('/', (req, res) => {
 //++++++++++++++++++ API Professeur contenant des fichiers +++++++++++++++++++++++++++++
 app.post("/api/teacher",authController.verifyJWT, uploadProfilTeacher.single('photo'), cProfesseur.create);
 app.put("/api/teacher/change-profil/:id",authController.verifyJWT, uploadProfilTeacher.single('photo'), cProfesseur.updateProfile);
-
-
-
-
 
 
 
