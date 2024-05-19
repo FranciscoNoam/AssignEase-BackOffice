@@ -47,7 +47,7 @@ app.use(function (req, res) {
 });
 
 const PORT = process.env.PORT || 3000;
-const IP = process.env.IP || '127.0.0.1';
+const IP = process.env.IP || 'localhost';
 
 server.listen(PORT, IP, () => {
     console.log(`App is listening at http://${IP}:${PORT}`);
