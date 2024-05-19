@@ -57,7 +57,7 @@ exports.updateAuteur = async (req, res) => {
       
       const auteurParse = JSON.parse(req.body['auteur']);
       const fileName = req.body['fileName'];
-      auteur.nom = auteurParse.nom;
+      auteur.nom = auteurParse.nom ? auteurParse.nom : auteur.nom;
       auteur.photo = fileName ? fileName : auteur.photo;
 
       const updatedAuteur = await auteur.save();
@@ -102,8 +102,12 @@ exports.deleteAuteur = async (req, res) => {
         return res.status(404).json({ message: "Auteur not found" });
       }
 
-      // Supprimer les assignments créés par l'auteur
-      await Assignment.deleteMany({ auteur: auteur.id });
+      try {
+        // Supprimer les assignments dont l'auteur est concerné
+        await Assignment.deleteMany({ auteur: auteur.id });
+      } catch (error) {
+        console.log("Warning during deletion :  ", error);
+      }
 
       // Supprimer l'auteur lui-même
       await Auteurdb.findByIdAndDelete(_id);

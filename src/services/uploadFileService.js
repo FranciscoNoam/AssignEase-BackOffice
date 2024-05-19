@@ -7,6 +7,7 @@ const sectionFile = (section )=>{
 }
 
 const storage = multer.diskStorage({
+    
     destination: function (req, file, cb) {
         cb(null, sectionFile( req.params.section)["diskStorage"] );
     },

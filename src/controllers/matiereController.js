@@ -73,9 +73,9 @@ const updateMatiere = async (req, res) => {
         
         const matiereParse = JSON.parse(req.body['matiere']);
         const fileName = req.body['fileName'] 
-        matiere.nom = matiereParse.nom;
+        matiere.nom = matiereParse.nom ? matiereParse.nom : matiere.nom;
         matiere.image = fileName ? fileName : matiere.image;
-        matiere.prof = matiereParse.prof.id;
+        matiere.prof = matiereParse.prof && matiereParse.prof.id ? matiereParse.prof.id : matiere.prof ;
 
         const updatedMatiere = await matiere.save();
         res.json({ message: 'Matiere updated', matiere: updatedMatiere });
@@ -96,7 +96,11 @@ const deleteMatiere = async (req, res) => {
             return res.status(404).json({ message: "Matiere not found" });
         }
 
-        await Assignment.deleteMany({ matiere: matiere.id });
+        try {
+            await Assignment.deleteMany({ matiere: matiere.id });
+        } catch (error) {
+            console.log("Warning during deletion :  ", error);
+        }
 
         await Matiere.findByIdAndDelete(_id);
         utilService.deleteImageFile("matiere", matiere.image);
