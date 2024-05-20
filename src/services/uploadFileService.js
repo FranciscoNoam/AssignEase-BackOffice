@@ -15,10 +15,8 @@ const storage = multer.diskStorage({
         const lastFile = req.body['lastFile'];
         if (lastFile) {
             utilService.deleteImageFile(req.params.section , lastFile);
-            console.log(lastFile , "Laste");
         }
         const fileName = req.body['fileName'];
-        console.log(fileName , "fileName");
         cb(null, fileName )  ;
     },
 });

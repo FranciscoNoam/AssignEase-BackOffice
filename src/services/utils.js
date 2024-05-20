@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const config = require("../../config/configuration");
 const fs = require("fs");
+const moment = require('moment');
 
 const sectionFile = (section )=>{
     return config.configUpload()[section];
@@ -15,14 +16,20 @@ const makeId = (id)=>{
 }
 
 const makeDate = (dateStr)=>{
-    const date = new Date(dateStr);
-    const day = date.getUTCDate();
-    const month = date.getUTCMonth() + 1; 
-    const year = date.getUTCFullYear();
-
-    const formattedDate = `${day}-${month}-${year}`;
-
+    let formattedDate = dateStr;
+    if (isDateValid(dateStr)) {
+        const date = new Date(dateStr);
+        const day = date.getUTCDate();
+        const month = date.getUTCMonth() + 1; 
+        const year = date.getUTCFullYear();
+        formattedDate = `${day}-${month}-${year}`;
+    }
     return formattedDate;
+}
+
+const isDateValid = (dateStr) => {
+    const regex = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}.\d{3}Z)?$/;
+    return regex.test(dateStr);
 }
 
 const verifyFolderUpload = (req, res, next) => {

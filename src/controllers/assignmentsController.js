@@ -93,18 +93,32 @@ function postAssignment(req, res){
 async function updateAssignment(req, res) {
     try {
       const _id = utilService.makeId(req.body._id); 
-  
-      const updatedAssignment = await Assignment.findByIdAndUpdate(
-        _id,
-        { $set: req.body }, 
-        { new: true, runValidators: true }
-      );
-  
-      if (!updatedAssignment) {
+      
+      const assignment = await Assignment.findById(_id);
+
+      if (!assignment) {
         return res.status(404).json({ message: 'Assignment not found' });
       }
-  
-      res.json({ message: 'Assignment updated successfully', assignment: updatedAssignment });
+
+        assignment.nom = req.body.nom ? req.body.nom :  assignment.nom ;
+        assignment.dateDeRendu = req.body.dateDeRendu ? utilService.makeDate(req.body.dateDeRendu) :  assignment.dateDeRendu;
+        assignment.auteur = req.body.auteur && req.body.auteur.id ? req.body.auteur.id :  assignment.auteur;
+        assignment.matiere = req.body.matiere && req.body.matiere.id ? req.body.matiere.id : assignment.matiere;
+        assignment.note = req.body.note ? req.body.note : assignment.note;
+        assignment.remarques = req.body.remarques ? req.body.remarques : assignment.remarques;
+        assignment.rendu = req.body.rendu ? req.body.rendu : assignment.rendu;
+
+        const updatedAssignment = await Assignment.findByIdAndUpdate(
+            _id,
+            { $set: assignment },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedAssignment) {
+            return res.status(404).json({ message: 'Assignment not found' });
+        }
+
+        res.json({ message: 'Assignment updated successfully', assignment: updatedAssignment });
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Internal server error' });
