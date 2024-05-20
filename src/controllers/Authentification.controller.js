@@ -15,14 +15,14 @@ exports.generateToken = (user) => {
         username: user.username,
         name: user.name,
     };
-    const JWT_DEV_SECRET =  "DEV_SECRET";
-    return jwt.sign(payload, process.env.JWT_SECRET || JWT_DEV_SECRET, { expiresIn: '2h' });
+    const JWT_SECRET =  process.env.JWT_SECRET || "DEV_SECRET";
+    return jwt.sign(payload, JWT_SECRET, { expiresIn: '2h' });
 };
 
 exports.verifyToken = (token) => {
-    const JWT_DEV_SECRET =  "DEV_SECRET";
+    const JWT_SECRET =  process.env.JWT_SECRET || "DEV_SECRET";
     try {
-        return jwt.verify(token, process.env.JWT_SECRET || JWT_DEV_SECRET);
+        return jwt.verify(token, JWT_SECRET);
     } catch (error) {
         return false;
     }
