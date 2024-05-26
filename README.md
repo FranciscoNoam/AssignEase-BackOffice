@@ -1,8 +1,8 @@
-# README de la structure du  Back office Node js pour le projet Angular
+## README de la structure du  Back office Node js pour le projet Angular
 
-# Le branch finale du backOffice c'est ' features/release-prod'
+## Le branch finale du backOffice c'est ' features/release-prod'
 
-# I. Voici la structure du projet BackOffice Nodejs
+### I. Voici la structure du projet BackOffice Nodejs
 
     Notre Projet /
     .   / config/
@@ -41,7 +41,7 @@
         C'est la gestion des fonctionnements de l'ensemble du projet
     """
 
-# II. +++++++++++++++++++++++++++ Explication des sous dossiers dans le projet/src/ ++++++++++++++++:
+### II.  Explication des sous dossiers dans le projet/src/
 
 
  ###### 1. projet/ src/ controllers
@@ -71,25 +71,31 @@
     """
 
 
-# III. +++++++++++++++++++++++++++ Liste des commandes pour lancer le projet +++++++++++++++++++++++++++
+### III.  Liste des commandes pour lancer le projet
 
 
-  #  1. Configuration du fichier .env:
+  ####  1. Configuration du fichier .env:
 
         Veuillez remplir tous les champs dans le fichier (voir un exemplaire dans '.env.example') pour la configuration de la base de donnée
 
- #  2. Installation des environement:
+ ####  2. Installation des environement:
 
         Pour installer les dépendances du projet, veuillez lancer cette commande pour la première fois :
 
      ==>   npm install
 
- #  3. Lancement de l'application local:
+ ####  3. Lancement de l'application local:
 
          Pour lancer l'application (ou démarrer l'application), veuillez lancer cette commande dans un terminale:
 
     ==>    `npm start`pour lancer l'application
     ou
     ==>    `node server.js`
+
+
+#### IV. Membre de l'équipe
+
+#### Tomboanjara Claudio
+#### ANTOENJARA Noam Francisco
 
 
