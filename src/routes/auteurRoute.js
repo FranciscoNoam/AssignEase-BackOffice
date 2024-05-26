@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const cAuth = require('../controllers/Authentification.controller');
-const auteurController = require('../controllers/AuteurController');
+const auteurController = require('../controllers/auteurController');
 const uploadService = require("../services/uploadFileService");
 const utilService =  require("./../services/utils");
 

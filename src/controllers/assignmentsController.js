@@ -92,40 +92,53 @@ function postAssignment(req, res){
 // Update d'un assignment (PUT)
 async function updateAssignment(req, res) {
     try {
-        const _id = utilService.makeId(req.body._id);
-        const assignment = await Assignment.findById(_id);
+      const _id = utilService.makeId(req.body._id); 
+      
+      const assignment = await Assignment.findById(_id);
+
+      if (!assignment) {
+        return res.status(404).json({ message: 'Assignment not found' });
+      }
+
+        assignment.nom = req.body.nom ? req.body.nom :  assignment.nom ;
+        assignment.dateDeRendu = req.body.dateDeRendu ? utilService.makeDate(req.body.dateDeRendu) :  assignment.dateDeRendu;
+        assignment.auteur = req.body.auteur && req.body.auteur.id ? req.body.auteur.id :  assignment.auteur;
+        assignment.matiere = req.body.matiere && req.body.matiere.id ? req.body.matiere.id : assignment.matiere;
+        assignment.note = req.body.note ? req.body.note : assignment.note;
+        assignment.remarques = req.body.remarques ? req.body.remarques : assignment.remarques;
+        assignment.rendu = req.body.rendu ? req.body.rendu : assignment.rendu;
+
+        const updatedAssignment = await Assignment.findByIdAndUpdate(
+            _id,
+            { $set: assignment },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedAssignment) {
+            return res.status(404).json({ message: 'Assignment not found' });
+        }
+
+        res.json({ message: 'Assignment updated successfully', assignment: updatedAssignment });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
+// suppression d'un assignment (DELETE)
+// l'id est bien le _id de mongoDB
+async function deleteAssignment(req, res) {
+    try {
+        const assignment = await Assignment.findByIdAndDelete(req.params.id);
+
         if (!assignment) {
             return res.status(404).json({ message: 'Assignment not found' });
         }
 
-        assignment.nom = req.body.nom;
-        assignment.dateDeRendu = utilService.makeDate(req.body.dateDeRendu);
-        assignment.note = req.body.note;
-        assignment.rendu = req.body.rendu;
-        assignment.auteur = req.body.auteur.id;
-        assignment.matiere = req.body.matiere.id;
-        assignment.remarques = req.body.remarques;
-
-        const updatedAssignment = await assignment.save();
-        res.json({ message: 'updated', assignment: updatedAssignment });
+        res.json({ message: `${assignment.nom} deleted` });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: err.message });
     }
 }
-
-// suppression d'un assignment (DELETE)
-// l'id est bien le _id de mongoDB
-function deleteAssignment(req, res) {
-
-    Assignment.findByIdAndRemove(req.params.id, (err, assignment) => {
-        if (err) {
-            res.send(err);
-        }
-        res.json({message: `${assignment.nom} deleted`});
-    })
-}
-
-
 
 module.exports = { getAssignments, postAssignment, getAssignment, updateAssignment, deleteAssignment };

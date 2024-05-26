@@ -7,6 +7,7 @@ const sectionFile = (section )=>{
 }
 
 const storage = multer.diskStorage({
+    
     destination: function (req, file, cb) {
         cb(null, sectionFile( req.params.section)["diskStorage"] );
     },
@@ -14,10 +15,8 @@ const storage = multer.diskStorage({
         const lastFile = req.body['lastFile'];
         if (lastFile) {
             utilService.deleteImageFile(req.params.section , lastFile);
-            console.log(lastFile , "Laste");
         }
         const fileName = req.body['fileName'];
-        console.log(fileName , "fileName");
         cb(null, fileName )  ;
     },
 });

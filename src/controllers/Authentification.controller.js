@@ -15,15 +15,13 @@ exports.generateToken = (user) => {
         username: user.username,
         name: user.name,
     };
-    // const JWT_SECRET =  "jhgihfzf!°97896987908/.?8è!ç";
-    // return jwt.sign(payload, JWT_SECRET, { expiresIn: '2h' });
-    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '2h' });
+    const JWT_SECRET =  process.env.JWT_SECRET || "DEV_SECRET";
+    return jwt.sign(payload, JWT_SECRET, { expiresIn: '2h' });
 };
 
 exports.verifyToken = (token) => {
-    const JWT_SECRET =  "jhgihfzf!°97896987908/.?8è!ç";
+    const JWT_SECRET =  process.env.JWT_SECRET || "DEV_SECRET";
     try {
-        // return jwt.verify(token, process.env.JWT_SECRET);
         return jwt.verify(token, JWT_SECRET);
     } catch (error) {
         return false;

@@ -5,12 +5,10 @@ mongoose.set("strictQuery", false);
 
 const connectDB = async () => {
   try {
-    /*const uri_local = "mongodb://localhost:27017/assign-easy"
+    const URI_LOCAL = "mongodb://localhost:27017/assign-easy";
+    const URI = process.env.URL_DB_MONGO || URI_LOCAL;
     await mongoose
-      .connect(process.env.URL_DB_MONGO || uri_local, {*/
-
-    await mongoose
-      .connect(process.env.URL_DB_MONGO || uri_local, {
+      .connect(URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       })

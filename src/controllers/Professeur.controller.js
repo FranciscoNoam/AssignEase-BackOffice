@@ -278,8 +278,8 @@ exports.updateProfesseur = async (req, res) => {
       
       const professeurParse = JSON.parse(req.body['professeur']);
       const fileName = req.body['fileName'];
-      professeur.nom = professeurParse.nom;
-      professeur.prenom = professeurParse.prenom;
+      professeur.nom = professeurParse.nom ? professeurParse.nom : professeur.nom;
+      professeur.prenom = professeurParse.prenom ? professeurParse.prenom : professeur.prenom;
       professeur.photo = fileName ? fileName : professeur.photo;
 
       const updatedProfesseur = await professeur.save();
@@ -325,14 +325,18 @@ exports.deleteProfesseur = async (req, res) => {
     // Extraire les IDs des matières
     const idsMatieres = matieresEnseignees.map(matiere => matiere._id);
 
-    // Supprimer les matières enseignées par le professeur et ses photos (matiere)
-    await Matieredb.deleteMany({ prof: professeur.id });
-    for (const matiere of matieresEnseignees) {
-      utilService.deleteImageFile("matiere", matiere.image);
+    try {
+      // Supprimer les matières enseignées par le professeur et ses photos (matiere)
+      await Matieredb.deleteMany({ prof: professeur.id });
+      for (const matiere of matieresEnseignees) {
+        utilService.deleteImageFile("matiere", matiere.image);
+      }
+  
+      // Supprimer les assignments associés aux matières supprimées
+      await Assignmentdb.deleteMany({ matiere: { $in: idsMatieres } });
+    } catch (error) {
+      console.log("Warning during deletion :  ", error);
     }
-
-    // Supprimer les assignments associés aux matières supprimées
-    await Assignmentdb.deleteMany({ matiere: { $in: idsMatieres } });
 
     // Supprimer le professeur lui-même et son photo
     await Professeurdb.findByIdAndDelete(_id);
