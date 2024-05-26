@@ -86,8 +86,10 @@
 
  #  3. Lancement de l'application local:
 
-        Pour lancer l'application, veuillez lancer cette commande :
+         Pour lancer l'application (ou démarrer l'application), veuillez lancer cette commande dans un terminale:
 
-    ==>    npm start ou node server.js
+    ==>    `npm start`pour lancer l'application
+    ou
+    ==>    `node server.js`
 
 
