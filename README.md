@@ -1,6 +1,6 @@
 ## README de la structure du  Back office Node js pour le projet Angular
 
-## Le branch finale du backOffice c'est ' features/release-prod'
+## La branche finale du backOffice c'est ' features/release-prod'
 
 ### I. Voici la structure du projet BackOffice Nodejs
 
