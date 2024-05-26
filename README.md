@@ -95,7 +95,7 @@
 
 #### IV. Membre de l'équipe
 
-#### Tomboanjara Claudio
-#### ANTOENJARA Noam Francisco
+#### - Tomboanjara Claudio
+#### - ANTOENJARA Noam Francisco
 
 
