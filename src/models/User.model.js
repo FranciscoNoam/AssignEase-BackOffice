@@ -14,7 +14,11 @@ const userSchema = new mongoose.Schema({
     },
     name: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    token_auth: { type: String }
+    token_auth: { type: String },
+    role:{
+        type: String,
+        default:"USER"
+    }
 });
 
 const Userdb = mongoose.model('users', userSchema);

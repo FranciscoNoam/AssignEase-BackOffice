@@ -14,6 +14,7 @@ exports.generateToken = (user) => {
         id: user._id,
         username: user.username,
         name: user.name,
+        role: user.role?user.role:"USER",
     };
     const JWT_SECRET =  process.env.JWT_SECRET || "DEV_SECRET";
     return jwt.sign(payload, JWT_SECRET, { expiresIn: '2h' });
@@ -43,6 +44,7 @@ exports.verifyJWT = (req, res, next) => {
         return res.status(403).json({status:403, error: 'Interdit' });
     }
     req.user = decoded;
+
     next();
 };
 
@@ -51,7 +53,7 @@ exports.authUser = async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        const user = await Userdb.findOne({ username: username }).select('name username password');
+        const user = await Userdb.findOne({ username: username }).select('name username role password');
         if (!user) {
             return res.status(404).json({ status:400,message: 'Email ou mot de passe est incorrect' });
         }
@@ -64,7 +66,7 @@ exports.authUser = async (req, res) => {
 
         const token = this.generateToken(user);
 
-        res.json({ status:200,message:"Success",token,name:user.name });
+        res.json({ status:200,message:"Success",token,name:user.name,role:user.role });
     } catch (error) {
         res.send({ ststus: 400, mesage: error.message });
     }

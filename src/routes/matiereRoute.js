@@ -7,9 +7,30 @@ const uploadService = require("../services/uploadFileService");
 const utilService =  require("./../services/utils");
 
     router.get("/" ,matiereController.getMatieres);
-    router.post("/:section" ,cAuth.verifyJWT,utilService.verifyFolderUpload,uploadService.upload.single('imageFile'),matiereController.postMatiere);
-    router.put('/:id/:section', cAuth.verifyJWT,utilService.verifyFolderUpload,uploadService.upload.single('imageFile'),matiereController.updateMatiere);
     router.get("/:id" ,matiereController.getMatiere);
-    router.delete('/:id', cAuth.verifyJWT, matiereController.deleteMatiere);
+
+    router.post("/:section" ,cAuth.verifyJWT,utilService.verifyFolderUpload,uploadService.upload.single('imageFile'),(req,res)=>{
+        if (req.user.role == "ADMIN") {
+            matiereController.postMatiere(req,res);
+          } else {
+            return res.json({ status: 400, error: "No permission for action" });
+          }
+    });
+
+    router.put('/:id/:section', cAuth.verifyJWT,utilService.verifyFolderUpload,uploadService.upload.single('imageFile'),(req,res)=>{
+        if (req.user.role == "ADMIN") {
+            matiereController.updateMatiere(req,res);
+          } else {
+            return res.json({ status: 400, error: "No permission for action" });
+          }
+    });
+
+    router.delete('/:id', cAuth.verifyJWT,(req,res)=>{
+        if (req.user.role == "ADMIN") {
+            matiereController.deleteMatiere(req,res);
+          } else {
+            return res.json({ status: 400, error: "No permission for action" });
+          }
+    });
 
 module.exports = router;

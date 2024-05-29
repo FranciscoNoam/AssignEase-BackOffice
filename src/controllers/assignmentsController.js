@@ -5,9 +5,9 @@ let utilService = require('../services/utils');
 
 function getAssignments(req, res){
     let aggregateQuery = Assignment.aggregate();
-   
+
     makeLookUpAssign(aggregateQuery);
-    
+
     const { filters, sorts } = req.body;
 
 
@@ -20,7 +20,7 @@ function getAssignments(req, res){
     }
 
     Assignment.aggregatePaginate(
-        aggregateQuery, 
+        aggregateQuery,
         {
             page: parseInt(req.query.page) || 1,
             limit: parseInt(req.query.limit) || 10
@@ -42,12 +42,12 @@ function getAssignment(req, res){
 
     aggregateQuery._pipeline.push({
         $match: {
-            _id: assignmentId 
+            _id: assignmentId
         }
     });
 
     makeLookUpAssign(aggregateQuery);
-    
+
     Assignment.aggregate(
         aggregateQuery
         .then(assignment => {
@@ -63,10 +63,10 @@ function getAssignment(req, res){
 function postAssignment(req, res){
     Assignment.findOne().sort({id: -1}).exec()
         .then(highestAssignment => {
-            let newId = 1; 
+            let newId = 1;
 
             if (highestAssignment) {
-                newId = highestAssignment.id + 1; 
+                newId = highestAssignment.id + 1;
             }
 
             let assignment = new Assignment();
@@ -92,8 +92,8 @@ function postAssignment(req, res){
 // Update d'un assignment (PUT)
 async function updateAssignment(req, res) {
     try {
-      const _id = utilService.makeId(req.body._id); 
-      
+      const _id = utilService.makeId(req.body._id);
+
       const assignment = await Assignment.findById(_id);
 
       if (!assignment) {
