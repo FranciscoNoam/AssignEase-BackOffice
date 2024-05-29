@@ -80,8 +80,8 @@ exports.createUserInit = async (req, res) => {
     try {
         // password: "develop"
         var tab = [
-            { name: "ANTOENJARA Noam Francisco", username: "antoenjara1998@gmail.com", password: "$2b$10$m2aXw5FCTMKvMxt68u9hv.sXzdngzJapKIIHjnKJNkGDQiZrIZoZu" },
-            { name: "TOMBOANJARA Claudio", username: "claudmja2.0@gmail.com", password: "$2b$10$m2aXw5FCTMKvMxt68u9hv.sXzdngzJapKIIHjnKJNkGDQiZrIZoZu" },
+            { name: "User Noam ", username: "userassign@gmail.com" ,role:'USER', password: "$2b$10$m2aXw5FCTMKvMxt68u9hv.sXzdngzJapKIIHjnKJNkGDQiZrIZoZu" },
+            { name: "Admin Claudio", username: "adminassign@gmail.com",role:'ADMIN', password: "$2b$10$m2aXw5FCTMKvMxt68u9hv.sXzdngzJapKIIHjnKJNkGDQiZrIZoZu" },
         ];
         const listUserInit = await Userdb.find();
 
