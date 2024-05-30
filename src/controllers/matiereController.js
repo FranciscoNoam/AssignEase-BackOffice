@@ -1,5 +1,6 @@
 const matiereService = require('../services/matiereService');
 let Matiere = require('./../models/matiere');
+let Assignment = require('./../models/assignment')
 const utilService =  require('./../services/utils');
 
 const getMatieres = (req, res) => {
