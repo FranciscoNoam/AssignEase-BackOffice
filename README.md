@@ -1,6 +1,3 @@
-### README.md pour le Backend (Node.js)
-
-```markdown
 # Système de Gestion des Assignments - Backend
 
 Ce projet représente la partie backend du Système de Gestion des Assignments, développé avec Node.js et Express. Il fournit des API pour gérer les assignments, les matières, les professeurs et les élèves.
