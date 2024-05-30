@@ -70,7 +70,8 @@ Ce projet représente la partie backend du Système de Gestion des Assignments, 
 ## Déploiement
 1. Déployer sur Render.com.
 2. Lien back deployement https://assignease-backend-b8rt.onrender.com/
-3. Lien front :
+3. Branche stable et final `features/release-prod`
+4. Lien front :
   - Git (Readme) https://github.com/Claud-mja/AssignEase-FrontApp/blob/features/preprod/README.md
   - deployement https://assignease-frontapp.onrender.com/
 
