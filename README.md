@@ -9,7 +9,7 @@ Ce projet représente la partie backend du Système de Gestion des Assignments, 
 - [Utilisation](#utilisation)
 - [Déploiement](#déploiement)
 - [Endpoints de l'API](#endpoints-de-lapi)
-- [Contribuer](#contribuer)
+- [Contributeurs](#contributeurs)
 
 ## Structure Projet
 
