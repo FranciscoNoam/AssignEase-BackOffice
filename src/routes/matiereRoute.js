@@ -6,8 +6,8 @@ const matiereController = require('../controllers/matiereController');
 const uploadService = require("../services/uploadFileService");
 const utilService =  require("./../services/utils");
 
-    router.get("/" ,matiereController.getMatieres);
-    router.get("/:id" ,matiereController.getMatiere);
+    router.get("/" ,cAuth.verifyJWT,matiereController.getMatieres);
+    router.get("/:id" ,cAuth.verifyJWT,matiereController.getMatiere);
 
     router.post("/:section" ,cAuth.verifyJWT,utilService.verifyFolderUpload,uploadService.upload.single('imageFile'),(req,res)=>{
         if (req.user.role == "ADMIN") {

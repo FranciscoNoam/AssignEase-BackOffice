@@ -8,8 +8,8 @@ const cAuth = require('../controllers/Authentification.controller');
 const uploadService = require("../services/uploadFileService");
 const utilService =  require("./../services/utils");
 
-router.get("/",cProfesseur.findAll);
-router.get("/:id",cProfesseur.getProfesseur);
+router.get("/",cAuth.verifyJWT,cProfesseur.findAll);
+router.get("/:id",cAuth.verifyJWT,cProfesseur.getProfesseur);
 
 router.post("/:section" ,cAuth.verifyJWT,utilService.verifyFolderUpload,uploadService.upload.single('imageFile'),(req,res)=>{
     if (req.user.role == "ADMIN") {

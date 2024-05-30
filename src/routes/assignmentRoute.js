@@ -4,7 +4,7 @@ const router = express.Router();
 const cAuth = require("../controllers/Authentification.controller");
 const assignmentController = require("../controllers/assignmentsController");
 
-router.post("/", assignmentController.getAssignments);
+router.post("/",cAuth.verifyJWT, assignmentController.getAssignments);
 
 router.post("/add", cAuth.verifyJWT, (req, res) => {
   if (req.user.role == "ADMIN") {
@@ -22,7 +22,7 @@ router.put("/", cAuth.verifyJWT, (req, res) => {
   }
 });
 
-router.get("/:id", assignmentController.getAssignment);
+router.get("/:id",cAuth.verifyJWT, assignmentController.getAssignment);
 
 router.delete("/:id", cAuth.verifyJWT, (req, res) => {
   if (req.user.role == "ADMIN") {

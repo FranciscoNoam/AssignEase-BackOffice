@@ -6,8 +6,8 @@ const auteurController = require('../controllers/auteurController');
 const uploadService = require("../services/uploadFileService");
 const utilService =  require("./../services/utils");
 
-router.get("/" , auteurController.findAll);
-router.get("/:id",auteurController.getAuteur);
+router.get("/" ,cAuth.verifyJWT, auteurController.findAll);
+router.get("/:id",cAuth.verifyJWT,auteurController.getAuteur);
 
 router.post("/:section" ,cAuth.verifyJWT,utilService.verifyFolderUpload,uploadService.upload.single('imageFile'),(req,res)=>{
     if (req.user.role == "ADMIN") {
