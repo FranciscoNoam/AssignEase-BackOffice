@@ -1,10 +1,19 @@
-## README de la structure du  Back office Node js pour le projet Angular
+# Système de Gestion des Assignments - Backend
 
-## La branche finale du backOffice c'est 'features/release-prod'
+Ce projet représente la partie backend du Système de Gestion des Assignments, développé avec Node.js et Express. Il fournit des API pour gérer les assignments, les matières, les professeurs et les élèves.
 
-### I. Voici la structure du projet BackOffice Nodejs
+## Table des matières
+- [Structure Projet](#structure-projet)
+- [Fonctionnalités](#fonctionnalités)
+- [Installation](#installation)
+- [Utilisation](#utilisation)
+- [Déploiement](#déploiement)
+- [Endpoints de l'API](#endpoints-de-lapi)
+- [Contributeurs](#contributeurs)
 
-    Notre Projet /
+## Structure Projet
+
+    AssignEasy-BackEnd /
     .   / config/
     .   / node_modules/
     .   / uploads/
@@ -23,79 +32,52 @@
     .   README.md
 
 
-###  Explication de la structure du projet
 
-  ###### 1. notre projet/config/:
+## Fonctionnalités
+- **Assignments**
+  - Opérations CRUD pour les assignments.
+  - Pagination et recherche.
+  - Marquer les assignments comme rendus avec des notes et des remarques.
+- **Matières**
+  - Opérations CRUD pour les matières.
+- **Professeurs**
+  - Opérations CRUD pour les professeurs.
+- **Auteurs (élèves)**
+  - Opérations CRUD pour les auteurs.
+- **Authentification**
+  - Seul un administrateur authentifié peut ajouter, modifier ou supprimer des éléments.
 
-    ==> C'est la gestion de configuration des stockages de fichier télécharger dépuis l'interface client: matiere, professeur, auteur
+## Installation
+1. Cloner le dépôt :
+   ```bash
+   git clone https://github.com/votre-utilisateur/assignment-management-backend.git
+   cd assignment-management-backend
+    ```
 
-  ###### 2.  notre projet/uploads/:
+2. Installer les dépendances :
+    ```bash
+    npm install
+   ```
 
-    """
-        C'est la gestion de sockage des fichiers des clients
-    """
+## Utilisation
+1. Démarrer le serveur :
+  ```bash
+  npm start
+  ```
 
- ###### 7.  projet/src/:
+3. L'API sera disponible à http://localhost:3000/.
 
-    """
-        C'est la gestion des fonctionnements de l'ensemble du projet
-    """
+## Déploiement
+1. Déployer sur Render.com.
+2. Lien back deployement https://assignease-backend-b8rt.onrender.com/
+3. Branche stable et final `features/release-prod`
+4. Lien front :
+  - Git (Readme) https://github.com/Claud-mja/AssignEase-FrontApp/blob/features/preprod/README.md
+  - deployement https://assignease-frontapp.onrender.com/
 
-### II.  Explication des sous dossiers dans le projet/src/
+## Endpoints de l'API
+- Lien postman pour les API https://www.postman.com/speeding-desert-678485/workspace/assigne-easy
 
-
- ###### 1. projet/ src/ controllers
-
-    """
-        C'est la gestion des fonctionnalités qui seront appeler dans l'API dans 'projet/ src/ route et dans projet/ server.js'
-    """
-
-  ###### 2. projet/ src/ database
-
-    """
-         C'est la gestion de connection à la base de donnée MongoDB
-    """
-
-  ###### 3. projet/ src/ models
-
-    """
-      C'est la gestion des collections à la base de donnée MongoDB
-
-    """
-
-  ###### 4. projet/ src/ services
-
-    """
-      C'est la gestion des jointure des models
-
-    """
-
-
-### III.  Liste des commandes pour lancer le projet
-
-
-  ####  1. Configuration du fichier .env:
-
-        Veuillez remplir tous les champs dans le fichier (voir un exemplaire dans '.env.example') pour la configuration de la base de donnée
-
- ####  2. Installation des environement:
-
-        Pour installer les dépendances du projet, veuillez lancer cette commande pour la première fois :
-
-     ==>   npm install
-
- ####  3. Lancement de l'application local:
-
-         Pour lancer l'application (ou démarrer l'application), veuillez lancer cette commande dans un terminale:
-
-    ==>    `npm start`pour lancer l'application
-    ou
-    ==>    `node server.js`
-
-
-#### IV. Membre de l'équipe
-
-#### - Tomboanjara Claudio
-#### - ANTOENJARA Noam Francisco
-
-
+## Contributeurs
+- TOMBOANJARA Claudio
+- ANTOENJARA Noam Francisco
