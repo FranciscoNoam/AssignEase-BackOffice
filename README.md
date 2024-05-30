@@ -3,7 +3,7 @@
 Ce projet représente la partie backend du Système de Gestion des Assignments, développé avec Node.js et Express. Il fournit des API pour gérer les assignments, les matières, les professeurs et les élèves.
 
 ## Table des matières
-- [Structure Projet](#structure)
+- [Structure Projet](#structure-projet)
 - [Fonctionnalités](#fonctionnalités)
 - [Installation](#installation)
 - [Utilisation](#utilisation)
