@@ -9,7 +9,7 @@ Ce projet représente la partie backend du Système de Gestion des Assignments, 
 - [Utilisation](#utilisation)
 - [Déploiement](#déploiement)
 - [Endpoints de l'API](#endpoints-de-lapi)
-- [Contributeurs](#contributeurs)
+- [Contributions](#contributions)
 
 ## Structure Projet
 
@@ -78,6 +78,40 @@ Ce projet représente la partie backend du Système de Gestion des Assignments, 
 ## Endpoints de l'API
 - Lien postman pour les API https://www.postman.com/speeding-desert-678485/workspace/assigne-easy
 
-## Contributeurs
-- TOMBOANJARA Claudio
-- ANTOENJARA Noam Francisco
+## Contributions
+
+### TOMBOANJARA Claudio
+
+#### Assignments :
+- Création des fonctions d'ajout d'une nouvelle assignment (Controller, Route et Service).
+- Création des fonctions de modification d'une assignment (Controller, Route et Service).
+- Création des fonctions de suppression d'une assignment (Controller, Route et Service).
+- Création des fonctions pour lister les assignments avec pagination et filtre ou recherche (Controller, Route et Service).
+
+#### Matières :
+- Création des fonctions d'ajout d'une nouvelle matière (Controller, Route et Service).
+- Création des fonctions de modification d'une matière (Controller, Route et Service).
+- Création des fonctions de suppression d'une matière et suppression des relations et de l'image associée (Controller, Route et Service).
+- Création des fonctions pour lister les matières (Controller, Route et Service).
+
+#### Upload d'image :
+- Création de la fonction générique pour uploader une image.
+
+### ANTOENJARA Noam Francisco
+
+#### Auteurs :
+- Création des fonctions d'ajout d'un nouvel auteur (Controller, Route et Service).
+- Création des fonctions de modification d'un auteur (Controller, Route et Service).
+- Création des fonctions de suppression d'un auteur et suppression des relations et de l'image associée (Controller, Route et Service).
+- Création des fonctions pour lister les auteurs (Controller, Route et Service).
+
+#### Professeurs :
+- Création des fonctions d'ajout d'un nouveau professeur (Controller, Route et Service).
+- Création des fonctions de modification d'un professeur (Controller, Route et Service).
+- Création des fonctions de suppression d'un professeur et suppression des relations et de l'image associée (Controller, Route et Service).
+- Création des fonctions pour lister les professeurs (Controller, Route et Service).
+
+#### Authentification (gestion de JWT token) :
+- Création des fonctions pour vérifier le token.
+- Création des fonctions pour hasher le mot de passe.
+- Création des fonctions pour gérer l'authentification (Controller, Route et Service).
