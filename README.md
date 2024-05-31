@@ -97,6 +97,9 @@ Ce projet représente la partie backend du Système de Gestion des Assignments, 
 #### Upload d'image :
 - Création de la fonction générique pour uploader une image.
 
+#### Deployement :
+- Mettre l'application en prodution
+
 ### ANTOENJARA Noam Francisco
 
 #### Auteurs :
