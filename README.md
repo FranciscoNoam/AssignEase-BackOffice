@@ -98,7 +98,7 @@ Ce projet représente la partie backend du Système de Gestion des Assignments, 
 - Création de la fonction générique pour uploader une image.
 
 #### Deployement :
-- Mettre l'application en prodution
+- Configuration et déploiement de l'application backend sur Render.com.
 
 ### ANTOENJARA Noam Francisco
 
@@ -118,3 +118,7 @@ Ce projet représente la partie backend du Système de Gestion des Assignments, 
 - Création des fonctions pour vérifier le token.
 - Création des fonctions pour hasher le mot de passe.
 - Création des fonctions pour gérer l'authentification (Controller, Route et Service).
+
+#### Deployement :
+- Configuration et déploiement de l'application backend sur Render.com.
+
